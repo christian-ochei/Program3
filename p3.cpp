@@ -11,7 +11,7 @@ stringList::stringList(int listCapacity){
 stringList::~stringList(){
     delete[] a;
 }
-
+//edited
 bool stringList::insert(std::string text){
     bool rc = listSize < listCapacity;
     if (rc){
@@ -29,7 +29,7 @@ bool stringList::insert(std::string text){
     return rc;
 }
 
-
+//edited needs check
 bool stringList::add(std::string text){
     bool shouldAdd = listSize < listCapacity;
     if (shouldAdd){
@@ -44,7 +44,7 @@ bool stringList::add(std::string text){
     }
     return shouldAdd;
 }
-
+//edited but still needs check
 bool stringList::insertAt(int index, std::string text){
     bool shouldInsert = index >= 0 && index <= listCapacity && listSize < listCapacity;
     if (shouldInsert){
@@ -66,6 +66,16 @@ bool stringList::insertAt(int index, std::string text){
         }
         a[index] = text;
         listSize += 1;
+    }
+   //insert at the end 
+    if(index==last){
+    //increment the last index
+        last=last+1;
+        last=(last)%listCapacity;
+        a[last] = text;
+    if(listSize==0){
+        last=first;
+    }
     }
     return shouldInsert;
 }
