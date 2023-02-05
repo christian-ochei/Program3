@@ -2,110 +2,141 @@
 #include <iostream>
 #include "p3.h"
 
-stringList::stringList(int listCapacity){
+cStringList::cStringList(int listCapacity){
+    // Author : Christian Ochei and Habtamu Wario
     a = new std::string[listCapacity];
     this->listCapacity = listCapacity;
     listSize = 0;
+    first = 0;
+    last = listCapacity-1;
 }
 
-stringList::~stringList(){
+cStringList ::~cStringList (){
     delete[] a;
 }
+
+
 //edited
-bool stringList::insert(std::string text){
+bool cStringList ::insert(std::string text){
     bool rc = listSize < listCapacity;
     if (rc){
         //decrement the first
-          first=first-1;
-        if(first<0){
-            first=listCapacity-1;
-        }
-        a[first] = text;
-        if(listSize==0){
-            last=first;
-        }
+//        decVal()
+//        first -= 1;
+//        last  -= 1;
+        decVal(first);
+        // Last stays the same
+
+//        if(first<0){
+//            first=listCapacity-1;
+//        }
+        a[toCListIndex(0)] = text;
+//        if(listSize==0){
+//            last=first;
+//        }
         listSize += 1;
     }
     return rc;
 }
 
 //edited needs check
-bool stringList::add(std::string text){
+bool cStringList ::add(std::string text){
     bool shouldAdd = listSize < listCapacity;
     if (shouldAdd){
         //increment the last index
-        last=last+1;
-        last=(last)%listCapacity;
-        a[last] = text;
-    if(listSize==0){
-        last=first;
-    }
+//        last=last+1;
+//        last=(last)%listCapacity;
+//        a[last] = text;
+//    if(listSize==0){
+//        last=first;
+//    }
+        a[toCListIndex(listSize)] = text;
         listSize += 1;
+        incVal(last);
+        // First stays the same
     }
     return shouldAdd;
 }
+
 //edited but still needs check
-bool stringList::insertAt(int index, std::string text){
+bool cStringList ::insertAt(int index, std::string text){
+//    bool shouldInsert = index >= 0 && index <= listCapacity && listSize < listCapacity;
+//    if (shouldInsert){
+//        if(index==0){
+//            //decrement the first
+//          first=first-1;
+//        if(first<0){
+//            first=listCapacity-1;
+//        }
+//        a[first] = text;
+//        if(listSize==0){
+//            last=first;
+//        }
+//        }
+//        //increment the index
+//        index=index+1;
+//        if(index>0){
+//            index=index%listCapacity;
+//        }
+//        a[index] = text;
+//        listSize += 1;
+//    }
+//   //insert at the end
+//    if(index==last){
+//    //increment the last index
+//        last=last+1;
+//        last=(last)%listCapacity;
+//        a[last] = text;
+//    if(listSize==0){
+//        last=first;
+//    }
     bool shouldInsert = index >= 0 && index <= listCapacity && listSize < listCapacity;
     if (shouldInsert){
-        if(index==0){
-            //decrement the first
-          first=first-1;
-        if(first<0){
-            first=listCapacity-1;
+        // If so, move each item from given index one step up the list
+        for (int i = listSize; i>index; i--){
+            a[toCListIndex(i)] = a[toCListIndex(i-1)];
         }
-        a[first] = text;
-        if(listSize==0){
-            last=first;
-        }
-        }
-        //increment the index
-        index=index+1;
-        if(index>0){
-            index=index%listCapacity;
-        }
-        a[index] = text;
+        // Available space should be left at given index
+        // Assign text to given index
+        a[toCListIndex(index)] = text;
+        // Increment list size
         listSize += 1;
-    }
-   //insert at the end 
-    if(index==last){
-    //increment the last index
-        last=last+1;
-        last=(last)%listCapacity;
-        a[last] = text;
-    if(listSize==0){
-        last=first;
-    }
+        incVal(last);
     }
     return shouldInsert;
 }
 
 
-bool stringList::deleteAt(int index, std::string text){
+bool cStringList ::deleteAt(int index, std::string& text){
     bool shouldDelete = index >= 0 && index < listSize;
     if (shouldDelete){
+        text = a[toCListIndex(index)];
         for (int i = index; i < listSize-1; i++){
-            a[i] = a[i+1];
+            a[toCListIndex(i)] = a[toCListIndex(i+1)];
         }
         listSize -= 1;
+        decVal(last);
     }
     return shouldDelete;
 }
 
-void stringList::clear(){
+void cStringList ::clear(){
+    // Author : Christian Ochei
     listSize = 0;
+    first = 0;
+    last = listCapacity-1;
 }
 
-void stringList::printIt() const {
+void cStringList ::printIt() const {
     for (int i = 0; i<listSize; i++){
-        std::cout << "At pos "<< i <<" there is " << a[i] << "\n";
+        std::cout << "At pos "<< i <<" there is " << a[toCListIndex(i)] << "\n";
     }
 }
 
-int stringList::getIndex(std::string text) const{
+int cStringList ::getIndex(std::string text) const{
     int index = -1;
     for (int i = 0; i<listSize; i++){
-        if (text == a[i]){
+        if (text == a[toCListIndex(i)]){
             index = i;
             break;
         }
@@ -113,15 +144,38 @@ int stringList::getIndex(std::string text) const{
     return index;
 }
 
-bool stringList::readAt(int index, std::string& text) const {
+bool cStringList ::readAt(int index, std::string& text) const {
     bool shouldRead = index >= 0 && index < listCapacity;
     if (shouldRead){
-        text = a[index];
+        text = a[toCListIndex(index)];
     }
     return shouldRead;
 }
 
 
-int stringList::count() const {
+int cStringList ::count() const {
     return listSize;
+}
+
+int cStringList::toCListIndex(int value) const {
+    return (first+value) % listCapacity;
+}
+
+bool cStringList::deleteFirst(std::string &text) {
+    bool rc = listSize != 0;
+    text = a[first];
+    if (rc){
+        incVal(first);
+        listSize --;
+    }
+    return rc;
+}
+
+bool cStringList::deleteLast(std::string &text) {
+    bool rc = listSize != 0;
+    if (rc){
+        decVal(last);
+        listSize --;
+    }
+    return rc;
 }
