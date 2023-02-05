@@ -20,11 +20,8 @@ private:
 
 public:
     cStringList(int listCapacity = 100);
-
     bool deleteFirst(std::string &text);
     bool deleteLast(std::string &text);
-
-
     ~cStringList ();
 
     bool insert(std::string text);

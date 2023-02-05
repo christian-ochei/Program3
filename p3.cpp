@@ -8,7 +8,7 @@ cStringList::cStringList(int listCapacity){
     this->listCapacity = listCapacity;
     listSize = 0;
     first = 0;
-    last = listCapacity-1;
+    last = 0;
 }
 
 cStringList ::~cStringList (){
@@ -145,7 +145,7 @@ int cStringList ::getIndex(std::string text) const{
 }
 
 bool cStringList ::readAt(int index, std::string& text) const {
-    bool shouldRead = index >= 0 && index < listCapacity;
+    bool shouldRead = index >= 0 && index < listSize;
     if (shouldRead){
         text = a[toCListIndex(index)];
     }
@@ -163,8 +163,8 @@ int cStringList::toCListIndex(int value) const {
 
 bool cStringList::deleteFirst(std::string &text) {
     bool rc = listSize != 0;
-    text = a[first];
     if (rc){
+        text = a[first];
         incVal(first);
         listSize --;
     }
@@ -174,8 +174,18 @@ bool cStringList::deleteFirst(std::string &text) {
 bool cStringList::deleteLast(std::string &text) {
     bool rc = listSize != 0;
     if (rc){
+        text = a[last];
         decVal(last);
         listSize --;
     }
     return rc;
+}
+
+
+void cStringList::decVal(int &value) {
+    value = (listCapacity + value - 1) % listCapacity;
+}
+
+void cStringList::incVal(int &value) {
+    value = (listCapacity + value + 1) % listCapacity;
 }
