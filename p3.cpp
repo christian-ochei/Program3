@@ -1,6 +1,6 @@
 #include <string>
 #include <iostream>
-#include "p1.h"
+#include "p3.h"
 
 stringList::stringList(int listCapacity){
     a = new std::string[listCapacity];
