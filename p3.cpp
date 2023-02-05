@@ -16,80 +16,37 @@ cStringList ::~cStringList (){
 }
 
 
-//edited
+//insert in the front
 bool cStringList ::insert(std::string text){
+    //check if there are items in a list
     bool rc = listSize < listCapacity;
     if (rc){
-        //decrement the first
-//        decVal()
-//        first -= 1;
-//        last  -= 1;
+        //decrement first 
         decVal(first);
-        // Last stays the same
-
-//        if(first<0){
-//            first=listCapacity-1;
-//        }
+        //assign the inserted value to the index 0 
         a[toCListIndex(0)] = text;
-//        if(listSize==0){
-//            last=first;
-//        }
         listSize += 1;
-    }
+    } 
     return rc;
 }
-
-//edited needs check
+//add at the end of the list
 bool cStringList ::add(std::string text){
+    //check if there are items in a list
     bool shouldAdd = listSize < listCapacity;
     if (shouldAdd){
-        //increment the last index
-//        last=last+1;
-//        last=(last)%listCapacity;
-//        a[last] = text;
-//    if(listSize==0){
-//        last=first;
-//    }
+        //if so assign value to last index;
         a[toCListIndex(listSize)] = text;
+        //increament the list Size
         listSize += 1;
         incVal(last);
-        // First stays the same
     }
+    //else return false;
     return shouldAdd;
 }
 
-//edited but still needs check
+//
 bool cStringList ::insertAt(int index, std::string text){
-//    bool shouldInsert = index >= 0 && index <= listCapacity && listSize < listCapacity;
-//    if (shouldInsert){
-//        if(index==0){
-//            //decrement the first
-//          first=first-1;
-//        if(first<0){
-//            first=listCapacity-1;
-//        }
-//        a[first] = text;
-//        if(listSize==0){
-//            last=first;
-//        }
-//        }
-//        //increment the index
-//        index=index+1;
-//        if(index>0){
-//            index=index%listCapacity;
-//        }
-//        a[index] = text;
-//        listSize += 1;
-//    }
-//   //insert at the end
-//    if(index==last){
-//    //increment the last index
-//        last=last+1;
-//        last=(last)%listCapacity;
-//        a[last] = text;
-//    if(listSize==0){
-//        last=first;
-//    }
+    
     bool shouldInsert = index >= 0 && index <= listCapacity && listSize < listCapacity;
     if (shouldInsert){
         // If so, move each item from given index one step up the list
@@ -106,86 +63,120 @@ bool cStringList ::insertAt(int index, std::string text){
     return shouldInsert;
 }
 
-
+//delete from the list at a given position
 bool cStringList ::deleteAt(int index, std::string& text){
+   //check if the index is between zero and index size;
     bool shouldDelete = index >= 0 && index < listSize;
+    //if so
     if (shouldDelete){
+        //assign the value at index to passed value
         text = a[toCListIndex(index)];
+        //iterate thought the list
         for (int i = index; i < listSize-1; i++){
+            //shift the values to the left by one;
             a[toCListIndex(i)] = a[toCListIndex(i+1)];
         }
+        //decrease the list size by one
         listSize -= 1;
+        //decreament the last 
         decVal(last);
     }
+    //else retur false
     return shouldDelete;
 }
 
+//Empty the list
 void cStringList ::clear(){
     // Author : Christian Ochei
     listSize = 0;
     first = 0;
-    last = listCapacity-1;
+    last = 0;
 }
 
+//print the list
 void cStringList ::printIt() const {
     for (int i = 0; i<listSize; i++){
         std::cout << "At pos "<< i <<" there is " << a[toCListIndex(i)] << "\n";
     }
 }
 
+//get the specific index of the given function
 int cStringList ::getIndex(std::string text) const{
+  //assign  -1 to the index 
     int index = -1;
+    //iterate through the list 
     for (int i = 0; i<listSize; i++){
+        //check if the value matches 
         if (text == a[toCListIndex(i)]){
+        //if so get the index of that value
             index = i;
             break;
         }
     }
+   //else return -1;
     return index;
 }
 
 bool cStringList ::readAt(int index, std::string& text) const {
+    //check if the index is greater than 0 and lees than list size
     bool shouldRead = index >= 0 && index < listSize;
+    //if so
     if (shouldRead){
+        //get the passed value 
         text = a[toCListIndex(index)];
     }
+    //else return false
     return shouldRead;
 }
 
-
+//count the number of entries 
 int cStringList ::count() const {
     return listSize;
 }
 
+//list the index value function 
 int cStringList::toCListIndex(int value) const {
     return (first+value) % listCapacity;
 }
 
+//delete the first element
 bool cStringList::deleteFirst(std::string &text) {
+    //check if the first element is differ from zero
     bool rc = listSize != 0;
+    //if so 
     if (rc){
+        //the value at first index is equal to passed value
         text = a[first];
+        //increament the first value 
         incVal(first);
+        //decreament listSize by one;
         listSize --;
     }
     return rc;
 }
 
+//delet last element in a list
 bool cStringList::deleteLast(std::string &text) {
+    //check if there is anything in a last element
     bool rc = listSize != 0;
+    //if so 
     if (rc){
+        //the text to the last value
         text = a[last];
+        //decreament the last
         decVal(last);
+        //decrease list size by one;
         listSize --;
     }
+    //else return false;
     return rc;
 }
 
-
+//decreament value function
 void cStringList::decVal(int &value) {
     value = (listCapacity + value - 1) % listCapacity;
 }
-
+//increament value function
 void cStringList::incVal(int &value) {
     value = (listCapacity + value + 1) % listCapacity;
 }
