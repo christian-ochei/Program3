@@ -1,7 +1,5 @@
 #include <string>
-
 #include <iostream>
-
 #include "p3.h"
 
 cStringList::cStringList(int listCapacity) {
@@ -213,3 +211,4 @@ void cStringList::incVal(int & value) {
         // Increment value by 1 and make its output is of mod listCapacity 
         // and always positive
         value = (listCapacity + value + 1) % listCapacity;
+}
