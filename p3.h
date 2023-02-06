@@ -1,5 +1,6 @@
-// Project: P1B
-// Christian Ochei, Habtamu Wario
+//Class Name:CSC 255 (datastructure).
+//Project: P3
+// author:Christian Ochei and Habtamu Wario
 
 #ifndef __P3_H
 #define __P3_H
