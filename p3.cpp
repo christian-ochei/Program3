@@ -12,18 +12,23 @@ cStringList::cStringList(int listCapacity){
 }
 
 cStringList ::~cStringList (){
+    // Author : Habtamu Wario
     delete[] a;
 }
 
 
 //insert in the front
 bool cStringList ::insert(std::string text){
-    //check if there are items in a list
+    // Author : Christian Ochei
+    
+    
+    // check if there are items in a list
     bool rc = listSize < listCapacity;
     if (rc){
         //decrement first 
         decVal(first);
-        //assign the inserted value to the index 0 
+        
+        // assign the inserted value to the index of 0 
         a[toCListIndex(0)] = text;
         listSize += 1;
     } 
@@ -31,6 +36,8 @@ bool cStringList ::insert(std::string text){
 }
 //add at the end of the list
 bool cStringList ::add(std::string text){
+    // Author : Christian Ochei
+
     //check if there are items in a list
     bool shouldAdd = listSize < listCapacity;
     if (shouldAdd){
@@ -46,7 +53,8 @@ bool cStringList ::add(std::string text){
 
 //
 bool cStringList ::insertAt(int index, std::string text){
-    
+    // Author : Christian Ochei and Habtamu Wario
+
     bool shouldInsert = index >= 0 && index <= listCapacity && listSize < listCapacity;
     if (shouldInsert){
         // If so, move each item from given index one step up the list
@@ -65,6 +73,8 @@ bool cStringList ::insertAt(int index, std::string text){
 
 //delete from the list at a given position
 bool cStringList ::deleteAt(int index, std::string& text){
+   // Author : Christian Ochei and Habtamu Wario
+
    //check if the index is between zero and index size;
     bool shouldDelete = index >= 0 && index < listSize;
     //if so
@@ -95,6 +105,7 @@ void cStringList ::clear(){
 
 //print the list
 void cStringList ::printIt() const {
+    // Author : Habtamu Wario
     for (int i = 0; i<listSize; i++){
         std::cout << "At pos "<< i <<" there is " << a[toCListIndex(i)] << "\n";
     }
@@ -102,7 +113,9 @@ void cStringList ::printIt() const {
 
 //get the specific index of the given function
 int cStringList ::getIndex(std::string text) const{
-  //assign  -1 to the index 
+    // Author : Christian Ochei and Habtamu Wario
+
+    //assign  -1 to the index 
     int index = -1;
     //iterate through the list 
     for (int i = 0; i<listSize; i++){
@@ -118,6 +131,8 @@ int cStringList ::getIndex(std::string text) const{
 }
 
 bool cStringList ::readAt(int index, std::string& text) const {
+   // Author : Habtamu Wario
+
     //check if the index is greater than 0 and lees than list size
     bool shouldRead = index >= 0 && index < listSize;
     //if so
@@ -129,18 +144,22 @@ bool cStringList ::readAt(int index, std::string& text) const {
     return shouldRead;
 }
 
-//count the number of entries 
+// count the number of entries 
 int cStringList ::count() const {
+    // Author : Habtamu Wario
     return listSize;
 }
 
 //list the index value function 
 int cStringList::toCListIndex(int value) const {
+    // Author : Christian Ochei
     return (first+value) % listCapacity;
 }
 
 //delete the first element
 bool cStringList::deleteFirst(std::string &text) {
+    // Author : Christian Ochei
+
     //check if the first element is differ from zero
     bool rc = listSize != 0;
     //if so 
@@ -157,7 +176,9 @@ bool cStringList::deleteFirst(std::string &text) {
 
 //delet last element in a list
 bool cStringList::deleteLast(std::string &text) {
-    //check if there is anything in a last element
+    // Author : Christian Ochei
+    
+    // check if there is anything in a last element
     bool rc = listSize != 0;
     //if so 
     if (rc){
@@ -174,9 +195,17 @@ bool cStringList::deleteLast(std::string &text) {
 
 //decreament value function
 void cStringList::decVal(int &value) {
+    // Author : Christian Ochei
+    
+    // Decrement value by 1 and make its output is of mod listCapacity 
+    // and always positive
     value = (listCapacity + value - 1) % listCapacity;
 }
 //increament value function
 void cStringList::incVal(int &value) {
+    // Author : Christian Ochei
+    
+    // Increment value by 1 and make its output is of mod listCapacity 
+    // and always positive
     value = (listCapacity + value + 1) % listCapacity;
 }
