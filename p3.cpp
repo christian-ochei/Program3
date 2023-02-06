@@ -1,3 +1,7 @@
+//Class Name:CSC 255 (datastructure).
+//Project: P3
+// author:Christian Ochei and Habtamu Wario
+
 #include <string>
 #include <iostream>
 #include "p3.h"
